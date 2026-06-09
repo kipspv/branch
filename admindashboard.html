@@ -190,6 +190,35 @@
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
+    const MONTH_SHORT_NAMES = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    const DAY_SHORT_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const DAY_SHORT_NAMES_ID = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+    function getWorkingDaysInMonth(month, year) {
+      const totalDays = new Date(Number(year), Number(month), 0).getDate();
+
+      return Array.from({ length: totalDays }, (_, index) => {
+        const day = index + 1;
+        const date = new Date(Number(year), Number(month) - 1, day);
+
+        return {
+          day,
+          month: Number(month),
+          year: Number(year),
+          weekday: date.getDay(),
+          weekdayLabel: DAY_SHORT_NAMES[date.getDay()],
+          weekdayLabelId: DAY_SHORT_NAMES_ID[date.getDay()],
+          dateOnlyLabel: String(day),
+          weekdayDateLabel: `${DAY_SHORT_NAMES_ID[date.getDay()]} ${day}`,
+          label: `${day} ${MONTH_SHORT_NAMES[Number(month) - 1]}`,
+        };
+      }).filter(item => item.weekday >= 1 && item.weekday <= 5);
+    }
+
     const DEFAULT_ATTENDANCE_SETTINGS = {
       lowMax: 5,
       mediumMin: 6,
@@ -859,9 +888,19 @@
       const summary = monthlyRecap?.summary || {};
       const dailyTotals = monthlyRecap?.dailyTotals || [];
       const classes = monthlyRecap?.classes || [];
-      const daysInMonth = monthlyRecap?.daysInMonth || 31;
+      const workingDays = getWorkingDaysInMonth(recapMonth, recapYear);
+      const workingDaySet = new Set(workingDays.map(item => Number(item.day)));
 
-      const maxTotal = Math.max(...dailyTotals.map(item => Number(item.total || 0)), 1);
+      const workingDailyTotals = workingDays.map(dayInfo => {
+        const found = dailyTotals.find(item => Number(item.day) === Number(dayInfo.day));
+
+        return {
+          ...dayInfo,
+          total: Number(found?.total || 0),
+        };
+      });
+
+      const maxTotal = Math.max(...workingDailyTotals.map(item => Number(item.total || 0)), 1);
 
       return (
         <section className="space-y-6 slide-up">
@@ -911,14 +950,14 @@
             <div className="flex items-center justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Daily Total Chart</h2>
-                <p className={mutedClass(isDark)}>Total murid hadir per tanggal.</p>
+                <p className={mutedClass(isDark)}>Total murid hadir per tanggal kerja (Senin–Jumat).</p>
               </div>
               <span className={badgeClass(isDark)}>{MONTH_NAMES[recapMonth - 1]} {recapYear}</span>
             </div>
 
             <div className="overflow-x-auto custom-scroll pb-2">
               <div className="min-w-[900px] h-64 flex items-end gap-2">
-                {dailyTotals.map(item => {
+                {workingDailyTotals.map(item => {
                   const height = Math.max(8, (Number(item.total || 0) / maxTotal) * 210);
 
                   return (
@@ -928,7 +967,7 @@
                         className={getAttendanceColorClass(Number(item.total || 0), attendanceSettings, 'bar')}
                         style={{ height: `${height}px` }}
                       ></div>
-                      <div className="text-[10px] opacity-60">{item.day}</div>
+                      <div className="text-[10px] opacity-60 text-center leading-tight">{item.label}<br />{item.weekdayLabel}</div>
                     </div>
                   );
                 })}
@@ -940,7 +979,7 @@
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Horizontal Recap</h2>
-                <p className={mutedClass(isDark)}>Baris = class, kolom = tanggal 1 sampai {daysInMonth}.</p>
+                <p className={mutedClass(isDark)}>Baris = class, kolom = tanggal kerja Senin–Jumat.</p>
               </div>
               <AttendanceLegend settings={attendanceSettings} />
             </div>
@@ -952,33 +991,53 @@
                 <table className="w-full min-w-[1180px] text-xs">
                   <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
                     <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
-                      <th className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[220px] bg-inherit">Class</th>
-                      {Array.from({ length: daysInMonth }, (_, i) => (
-                        <th key={i + 1} className="py-3 px-2 text-center min-w-[42px]">{i + 1}</th>
+                      <th rowSpan="2" className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[220px] bg-inherit align-middle">Class</th>
+                      <th colSpan={workingDays.length} className="py-3 px-2 text-center text-[13px] font-black uppercase tracking-[0.18em]">
+                        {MONTH_NAMES[recapMonth - 1]} {recapYear}
+                      </th>
+                      <th rowSpan="2" className="py-3 px-3 text-center min-w-[70px] align-middle">Total</th>
+                    </tr>
+
+                    <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
+                      {workingDays.map(dayInfo => (
+                        <th key={dayInfo.day} className="py-3 px-2 text-center min-w-[56px]">
+                          <span className="block font-black">{dayInfo.weekdayDateLabel}</span>
+                        </th>
                       ))}
-                      <th className="py-3 px-3 text-center min-w-[70px]">Total</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {classes.map(row => (
-                      <tr key={row.classId} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
-                        <td className={isDark ? 'sticky left-0 z-10 py-3 pr-4 bg-slate-900/95' : 'sticky left-0 z-10 py-3 pr-4 bg-white/95'}>
-                          <p className="font-black">{row.trainerName}</p>
-                          <p className="opacity-55">{row.jamSection} • {row.level}</p>
-                        </td>
+                    {classes.map(row => {
+                      const workingRowDays = workingDays.map(dayInfo => {
+                        const found = (row.days || []).find(day => Number(day.day) === Number(dayInfo.day));
 
-                        {row.days.map(day => (
-                          <td key={day.day} className="py-2 px-2 text-center">
-                            <span className={getAttendanceColorClass(day.value, attendanceSettings, 'cell')}>
-                              {day.value === '' ? '-' : day.value}
-                            </span>
+                        return found || { day: dayInfo.day, value: '' };
+                      });
+
+                      const workingTotal = workingRowDays.reduce((sum, day) => {
+                        return sum + (day.value === '' || day.value === null || day.value === undefined ? 0 : Number(day.value || 0));
+                      }, 0);
+
+                      return (
+                        <tr key={row.classId} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
+                          <td className={isDark ? 'sticky left-0 z-10 py-3 pr-4 bg-slate-900/95' : 'sticky left-0 z-10 py-3 pr-4 bg-white/95'}>
+                            <p className="font-black">{row.trainerName}</p>
+                            <p className="opacity-55">{row.jamSection} • {row.level}</p>
                           </td>
-                        ))}
 
-                        <td className="py-3 px-3 text-center font-black">{row.total}</td>
-                      </tr>
-                    ))}
+                          {workingRowDays.map(day => (
+                            <td key={day.day} className="py-2 px-2 text-center">
+                              <span className={getAttendanceColorClass(day.value, attendanceSettings, 'cell')}>
+                                {day.value === '' ? '-' : day.value}
+                              </span>
+                            </td>
+                          ))}
+
+                          <td className="py-3 px-3 text-center font-black">{workingTotal}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
