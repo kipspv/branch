@@ -143,6 +143,28 @@
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
+    const MONTH_NAMES_SHORT = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    const WORKDAY_NAMES_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    function getWorkdaysInMonth(month, year, daysInMonth) {
+      return Array.from({ length: daysInMonth }, (_, i) => {
+        const day = i + 1;
+        const date = new Date(Number(year), Number(month) - 1, day);
+
+        return {
+          day,
+          weekdayIndex: date.getDay(),
+          weekdayLabel: WORKDAY_NAMES_SHORT[date.getDay()],
+          dateLabel: `${WORKDAY_NAMES_SHORT[date.getDay()]} ${day}`,
+          monthLabel: `${MONTH_NAMES_SHORT[Number(month) - 1]} ${Number(year)}`,
+        };
+      }).filter(item => item.weekdayIndex >= 1 && item.weekdayIndex <= 5);
+    }
+
     const DEFAULT_SUPPLY_SETTINGS = {
       lowMax: 50,
       mediumMin: 51,
@@ -669,9 +691,20 @@
       const classes = monthlyRecap?.classes || [];
       const dailyTotals = monthlyRecap?.dailyTotals || [];
       const daysInMonth = monthlyRecap?.daysInMonth || 31;
+      const workdays = getWorkdaysInMonth(recapMonth, recapYear, daysInMonth);
+      const workdayNumbers = new Set(workdays.map(item => Number(item.day)));
+      const chartDailyTotals = workdays.map(workday => {
+        const found = dailyTotals.find(item => Number(item.day) === Number(workday.day));
 
-      const maxPaper = Math.max(...dailyTotals.map(item => Number(item.paperTotal || 0)), 1);
-      const maxPrinting = Math.max(...dailyTotals.map(item => Number(item.printingTotal || 0)), 1);
+        return {
+          ...workday,
+          paperTotal: found?.paperTotal || 0,
+          printingTotal: found?.printingTotal || 0,
+        };
+      });
+
+      const maxPaper = Math.max(...chartDailyTotals.map(item => Number(item.paperTotal || 0)), 1);
+      const maxPrinting = Math.max(...chartDailyTotals.map(item => Number(item.printingTotal || 0)), 1);
 
       return (
         <section className="space-y-6 slide-up">
@@ -719,14 +752,14 @@
             <div className="flex items-center justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Daily Usage Chart</h2>
-                <p className={mutedClass(isDark)}>Total paper dan printing per tanggal.</p>
+                <p className={mutedClass(isDark)}>Total paper dan printing per hari kerja.</p>
               </div>
               <span className={badgeClass(isDark)}>{MONTH_NAMES[recapMonth - 1]} {recapYear}</span>
             </div>
 
             <div className="overflow-x-auto custom-scroll pb-2">
-              <div className="min-w-[900px] h-72 flex items-end gap-2">
-                {dailyTotals.map(item => {
+              <div className="h-72 flex items-end gap-2" style={{ minWidth: `${Math.max(760, chartDailyTotals.length * 52)}px` }}>
+                {chartDailyTotals.map(item => {
                   const paperHeight = Math.max(8, (Number(item.paperTotal || 0) / maxPaper) * 210);
                   const printingHeight = Math.max(8, (Number(item.printingTotal || 0) / maxPrinting) * 210);
 
@@ -745,7 +778,7 @@
                           style={{ height: `${printingHeight}px`, width: '10px' }}
                         ></div>
                       </div>
-                      <div className="text-[10px] opacity-60">{item.day}</div>
+                      <div className="text-[10px] opacity-60 text-center leading-tight">{item.dateLabel}<br />{MONTH_NAMES_SHORT[recapMonth - 1]}</div>
                     </div>
                   );
                 })}
@@ -762,7 +795,7 @@
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Horizontal Recap Per Inventory Item</h2>
-                <p className={mutedClass(isDark)}>Kolom tanggal 1 sampai {daysInMonth}. Format: Paper / Printing.</p>
+                <p className={mutedClass(isDark)}>Kolom hanya hari kerja Senin–Jumat. Format: Paper / Printing.</p>
               </div>
               <SupplyLegend settings={supplySettings} />
             </div>
@@ -774,11 +807,19 @@
                 <table className="w-full min-w-[1180px] text-xs">
                   <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
                     <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
-                      <th className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[230px] bg-inherit">Inventory Item</th>
-                      {Array.from({ length: daysInMonth }, (_, i) => (
-                        <th key={i + 1} className="py-3 px-2 text-center min-w-[58px]">{i + 1}</th>
+                      <th className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[230px] bg-inherit" rowSpan="2">Inventory Item</th>
+                      <th className="py-3 px-2 text-center font-black" colSpan={workdays.length}>
+                        {MONTH_NAMES[recapMonth - 1]} {recapYear}
+                      </th>
+                      <th className="py-3 px-3 text-center min-w-[90px]" rowSpan="2">Total</th>
+                    </tr>
+                    <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
+                      {workdays.map(item => (
+                        <th key={item.day} className="py-3 px-2 text-center min-w-[68px]">
+                          <span className="block font-black">{item.weekdayLabel}</span>
+                          <span className="block opacity-70">{item.day} {MONTH_NAMES_SHORT[recapMonth - 1]}</span>
+                        </th>
                       ))}
-                      <th className="py-3 px-3 text-center min-w-[90px]">Total</th>
                     </tr>
                   </thead>
 
@@ -790,18 +831,28 @@
                           <p className="opacity-55">{row.jamSection} • {row.level}</p>
                         </td>
 
-                        {row.days.map(day => (
-                          <td key={day.day} className="py-2 px-2 text-center">
-                            <span className={getSupplyColorClass(Number(day.paperUsed || 0) + Number(day.printingUsed || 0), supplySettings, 'cell')}>
-                              {day.paperUsed === '' && day.printingUsed === ''
-                                ? '-'
-                                : `${day.paperUsed || 0}/${day.printingUsed || 0}`}
-                            </span>
-                          </td>
-                        ))}
+                        {workdays.map(workday => {
+                          const day = row.days.find(item => Number(item.day) === Number(workday.day)) || { paperUsed: '', printingUsed: '' };
+
+                          return (
+                            <td key={workday.day} className="py-2 px-2 text-center">
+                              <span className={getSupplyColorClass(Number(day.paperUsed || 0) + Number(day.printingUsed || 0), supplySettings, 'cell')}>
+                                {day.paperUsed === '' && day.printingUsed === ''
+                                  ? '-'
+                                  : `${day.paperUsed || 0}/${day.printingUsed || 0}`}
+                              </span>
+                            </td>
+                          );
+                        })}
 
                         <td className="py-3 px-3 text-center font-black">
-                          {row.totalPaper}/{row.totalPrinting}
+                          {row.days
+                            .filter(day => workdayNumbers.has(Number(day.day)))
+                            .reduce((sum, day) => sum + Number(day.paperUsed || 0), 0)}
+                          /
+                          {row.days
+                            .filter(day => workdayNumbers.has(Number(day.day)))
+                            .reduce((sum, day) => sum + Number(day.printingUsed || 0), 0)}
                         </td>
                       </tr>
                     ))}
