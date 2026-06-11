@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
   <base target="_top">
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
   <title>Admin Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,93 +14,29 @@
   <style>
     :root {
       --dock-bottom: max(18px, env(safe-area-inset-bottom));
+      --card-radius: 28px;
     }
 
     * {
+      box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
       transition:
-        background-color 420ms ease,
-        color 420ms ease,
-        border-color 420ms ease,
-        box-shadow 420ms ease,
-        opacity 260ms ease;
+        background-color 260ms ease,
+        color 260ms ease,
+        border-color 260ms ease,
+        box-shadow 260ms ease,
+        opacity 180ms ease,
+        transform 180ms ease;
     }
 
-    body {
+    html, body {
+      margin: 0;
+      min-height: 100%;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .fade-in {
-      animation: fadeIn 0.45s ease both;
-    }
-
-    .slide-up {
-      animation: slideUp 0.5s ease both;
-    }
-
-    .dock-pop {
-      animation: dockPop 0.45s cubic-bezier(.2,.9,.2,1.2) both;
-    }
-
-    .modal-pop {
-      animation: modalPop 0.28s cubic-bezier(.2,.9,.2,1.1) both;
-    }
-
-    .toast-in {
-      animation: toastIn 0.32s ease both;
-    }
-
-    .theme-switching {
-      pointer-events: none;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes dockPop {
-      from {
-        opacity: 0;
-        transform: translateY(20px) scale(.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes modalPop {
-      from {
-        opacity: 0;
-        transform: translateY(18px) scale(.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes toastIn {
-      from {
-        opacity: 0;
-        transform: translateY(14px) scale(.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+    input, select, button {
+      font-family: inherit;
     }
 
     input, select {
@@ -114,28 +48,49 @@
       color-scheme: dark;
     }
 
-    .glass-light {
-      background: rgba(255,255,255,.74);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    .fade-in {
+      animation: fadeIn .35s ease both;
     }
 
-    .glass-dark {
-      background: rgba(15,23,42,.74);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    .slide-up {
+      animation: slideUp .42s ease both;
     }
 
-    .dock-glass-light {
-      background: rgba(255,255,255,.78);
-      backdrop-filter: blur(28px) saturate(1.4);
-      -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    .dock-pop {
+      animation: dockPop .42s cubic-bezier(.2,.9,.2,1.15) both;
     }
 
-    .dock-glass-dark {
-      background: rgba(15,23,42,.80);
-      backdrop-filter: blur(28px) saturate(1.4);
-      -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    .modal-pop {
+      animation: modalPop .24s cubic-bezier(.2,.9,.2,1.12) both;
+    }
+
+    .toast-in {
+      animation: toastIn .26s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes dockPop {
+      from { opacity: 0; transform: translateY(20px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: translateY(18px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(14px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .custom-scroll::-webkit-scrollbar {
@@ -148,23 +103,34 @@
     }
 
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, .45);
+      background: rgba(148, 163, 184, .42);
       border-radius: 999px;
     }
 
     .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: rgba(148, 163, 184, .7);
+      background: rgba(148, 163, 184, .72);
+    }
+
+    .theme-switching {
+      pointer-events: none;
+    }
+
+    .glass-dark {
+      background: rgba(15, 23, 42, .78);
+      backdrop-filter: blur(26px) saturate(1.35);
+      -webkit-backdrop-filter: blur(26px) saturate(1.35);
+    }
+
+    .glass-light {
+      background: rgba(255, 255, 255, .78);
+      backdrop-filter: blur(26px) saturate(1.25);
+      -webkit-backdrop-filter: blur(26px) saturate(1.25);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *,
-      .fade-in,
-      .slide-up,
-      .dock-pop,
-      .modal-pop,
-      .toast-in {
-        transition: none !important;
+      *, .fade-in, .slide-up, .dock-pop, .modal-pop, .toast-in {
         animation: none !important;
+        transition: none !important;
       }
     }
   </style>
@@ -177,7 +143,7 @@
     const { useEffect, useMemo, useState } = React;
 
     /***********************
-     * GITHUB FRONTEND CONFIG
+     * FRONTEND CONFIG
      ***********************/
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyMWiYzb3q1cSsj7P4GR7f8Orlx4cV-Qq9CoA-EnLaMx3XyHLfoSnzGZI49r3vaJQJadw/exec';
 
@@ -198,27 +164,6 @@
     const DAY_SHORT_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const DAY_SHORT_NAMES_ID = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
-    function getWorkingDaysInMonth(month, year) {
-      const totalDays = new Date(Number(year), Number(month), 0).getDate();
-
-      return Array.from({ length: totalDays }, (_, index) => {
-        const day = index + 1;
-        const date = new Date(Number(year), Number(month) - 1, day);
-
-        return {
-          day,
-          month: Number(month),
-          year: Number(year),
-          weekday: date.getDay(),
-          weekdayLabel: DAY_SHORT_NAMES[date.getDay()],
-          weekdayLabelId: DAY_SHORT_NAMES_ID[date.getDay()],
-          dateOnlyLabel: String(day),
-          weekdayDateLabel: `${DAY_SHORT_NAMES_ID[date.getDay()]} ${day}`,
-          label: `${day} ${MONTH_SHORT_NAMES[Number(month) - 1]}`,
-        };
-      }).filter(item => item.weekday >= 1 && item.weekday <= 5);
-    }
-
     const DEFAULT_ATTENDANCE_SETTINGS = {
       lowMax: 5,
       mediumMin: 6,
@@ -226,6 +171,9 @@
       highMin: 8,
     };
 
+    /***********************
+     * API
+     ***********************/
     async function runGas(action, ...params) {
       if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === 'PASTE_YOUR_GAS_WEB_APP_URL_HERE') {
         throw new Error('GAS_WEB_APP_URL belum diatur.');
@@ -233,10 +181,7 @@
 
       const response = await fetch(GAS_WEB_APP_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          action,
-          params,
-        }),
+        body: JSON.stringify({ action, params }),
       });
 
       const text = await response.text();
@@ -244,27 +189,218 @@
       try {
         return JSON.parse(text);
       } catch (error) {
-        throw new Error('Response server bukan JSON valid.');
+        throw new Error('Response server bukan JSON valid. Cek deployment GAS atau permission Web App.');
       }
     }
 
+    /***********************
+     * DATA CLEANING HELPERS
+     ***********************/
+    function cleanText(value) {
+      return String(value || '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function titleCase(value) {
+      const cleaned = cleanText(value);
+      if (!cleaned) return '';
+
+      return cleaned
+        .split(' ')
+        .map(part => {
+          if (!part) return '';
+          if (/^[A-Z]{2,}$/.test(part)) return part;
+          return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+        })
+        .join(' ');
+    }
+
+    function displayTrainerName(value) {
+      return titleCase(value);
+    }
+
+    function canonicalTrainerName(value) {
+      return cleanText(value)
+        .toLowerCase()
+        .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, ' ')
+        .replace(/\b(miss|ms|mrs|mr|teacher|trainer|sir|madam|kak|ustadz|ustadzah)\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function normalizeClassPayload(form) {
+      return {
+        trainerName: displayTrainerName(form.trainerName),
+        level: cleanText(form.level),
+        jamSection: cleanText(form.jamSection),
+        branch: cleanText(form.branch),
+        status: cleanText(form.status || 'Active'),
+      };
+    }
+
+    function makeLocalDateInput(date = new Date()) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function getWorkingDaysInMonth(month, year) {
+      const totalDays = new Date(Number(year), Number(month), 0).getDate();
+
+      return Array.from({ length: totalDays }, (_, index) => {
+        const day = index + 1;
+        const date = new Date(Number(year), Number(month) - 1, day);
+        const weekday = date.getDay();
+
+        return {
+          day,
+          month: Number(month),
+          year: Number(year),
+          weekday,
+          weekdayLabel: DAY_SHORT_NAMES[weekday],
+          weekdayLabelId: DAY_SHORT_NAMES_ID[weekday],
+          dateOnlyLabel: String(day),
+          weekdayDateLabel: `${DAY_SHORT_NAMES_ID[weekday]} ${day}`,
+          label: `${day} ${MONTH_SHORT_NAMES[Number(month) - 1]}`,
+        };
+      }).filter(item => item.weekday >= 1 && item.weekday <= 5);
+    }
+
+    function getClassKey(item, useCanonicalTrainer = true) {
+      const trainer = useCanonicalTrainer
+        ? canonicalTrainerName(item['Trainer Name'] || item.trainerName)
+        : cleanText(item['Trainer Name'] || item.trainerName).toLowerCase();
+
+      return [
+        cleanText(item.Branch || item.branch).toLowerCase(),
+        cleanText(item['Jam/Section'] || item.jamSection).toLowerCase(),
+        cleanText(item.Level || item.level).toLowerCase(),
+        trainer,
+      ].join('|');
+    }
+
+    function buildTrainerSuggestions(classes) {
+      const map = {};
+
+      (classes || []).forEach(item => {
+        const original = cleanText(item['Trainer Name']);
+        const display = displayTrainerName(original);
+        const key = canonicalTrainerName(original);
+        if (!key || !display) return;
+
+        if (!map[key]) {
+          map[key] = display;
+        }
+      });
+
+      return Object.values(map).sort((a, b) => a.localeCompare(b));
+    }
+
+    function analyzeClassData(classes) {
+      const trainerGroups = {};
+      const exactTrainerMap = {};
+      const classKeyMap = {};
+      const formattingIssues = [];
+
+      (classes || []).forEach(item => {
+        const originalTrainer = cleanText(item['Trainer Name']);
+        const cleanTrainer = displayTrainerName(originalTrainer);
+        const trainerKey = canonicalTrainerName(originalTrainer);
+        const exactTrainerKey = originalTrainer.toLowerCase();
+        const classKey = getClassKey(item, true);
+
+        if (originalTrainer && originalTrainer !== cleanTrainer) {
+          formattingIssues.push({ item, originalTrainer, cleanTrainer });
+        }
+
+        if (trainerKey) {
+          if (!trainerGroups[trainerKey]) trainerGroups[trainerKey] = [];
+          trainerGroups[trainerKey].push(item);
+        }
+
+        if (exactTrainerKey) {
+          if (!exactTrainerMap[exactTrainerKey]) exactTrainerMap[exactTrainerKey] = [];
+          exactTrainerMap[exactTrainerKey].push(item);
+        }
+
+        if (classKey) {
+          if (!classKeyMap[classKey]) classKeyMap[classKey] = [];
+          classKeyMap[classKey].push(item);
+        }
+      });
+
+      const suspiciousTrainerGroups = Object.keys(trainerGroups)
+        .map(key => {
+          const items = trainerGroups[key];
+          const variants = Array.from(new Set(items.map(item => cleanText(item['Trainer Name'])).filter(Boolean)));
+          return { key, items, variants };
+        })
+        .filter(group => group.variants.length > 1)
+        .sort((a, b) => b.variants.length - a.variants.length);
+
+      const duplicateClassGroups = Object.keys(classKeyMap)
+        .map(key => ({ key, items: classKeyMap[key] }))
+        .filter(group => group.items.length > 1)
+        .sort((a, b) => b.items.length - a.items.length);
+
+      return {
+        suspiciousTrainerGroups,
+        duplicateClassGroups,
+        formattingIssues,
+        issueCount: suspiciousTrainerGroups.length + duplicateClassGroups.length + formattingIssues.length,
+      };
+    }
+
+    function sortByClassOrder(a, b) {
+      return [
+        cleanText(a.branch || a.Branch).localeCompare(cleanText(b.branch || b.Branch)),
+        cleanText(a.jamSection || a['Jam/Section']).localeCompare(cleanText(b.jamSection || b['Jam/Section'])),
+        cleanText(a.level || a.Level).localeCompare(cleanText(b.level || b.Level)),
+        displayTrainerName(a.trainerName || a['Trainer Name']).localeCompare(displayTrainerName(b.trainerName || b['Trainer Name'])),
+      ].find(result => result !== 0) || 0;
+    }
+
+    function matchesSearch(row, query) {
+      const q = cleanText(query).toLowerCase();
+      if (!q) return true;
+
+      return [
+        row.branch,
+        row.date,
+        row.day,
+        row.jamSection,
+        row.level,
+        row.trainerName,
+        displayTrainerName(row.trainerName),
+        row['Trainer Name'],
+        row.Level,
+        row['Jam/Section'],
+      ].some(value => cleanText(value).toLowerCase().includes(q));
+    }
+
+    /***********************
+     * APP
+     ***********************/
     function App() {
       const today = new Date();
 
       const [theme, setTheme] = useState(localStorage.getItem(THEME_KEY) || 'dark');
       const [activeMenu, setActiveMenu] = useState('dashboard');
-
       const [user, setUser] = useState(null);
       const [loading, setLoading] = useState(true);
       const [saving, setSaving] = useState(false);
-
       const [toast, setToast] = useState(null);
       const [confirmDialog, setConfirmDialog] = useState(null);
+      const [accessError, setAccessError] = useState('');
 
       const [classes, setClasses] = useState([]);
       const [dailyStudents, setDailyStudents] = useState([]);
-      const [matrixDate, setMatrixDate] = useState(new Date().toISOString().slice(0, 10));
+      const [matrixDate, setMatrixDate] = useState(makeLocalDateInput(today));
       const [matrixRows, setMatrixRows] = useState([]);
+      const [matrixSearch, setMatrixSearch] = useState('');
+      const [recordsSearch, setRecordsSearch] = useState('');
 
       const [recapMonth, setRecapMonth] = useState(today.getMonth() + 1);
       const [recapYear, setRecapYear] = useState(today.getFullYear());
@@ -278,8 +414,6 @@
           return DEFAULT_ATTENDANCE_SETTINGS;
         }
       });
-
-      const [accessError, setAccessError] = useState('');
 
       const [classForm, setClassForm] = useState({
         id: '',
@@ -298,6 +432,25 @@
 
       const isDark = theme === 'dark';
 
+      const classHealth = useMemo(() => analyzeClassData(classes), [classes]);
+      const trainerSuggestions = useMemo(() => buildTrainerSuggestions(classes), [classes]);
+
+      const stats = useMemo(() => {
+        const totalStudents = dailyStudents.reduce((sum, item) => sum + Number(item['Murid Hadir'] || 0), 0);
+        const filledMatrix = matrixRows.filter(row => row.muridHadir !== '' && row.muridHadir !== null && row.muridHadir !== undefined).length;
+        const savedMatrix = matrixRows.filter(row => row.isSaved).length;
+
+        return {
+          totalClasses: classes.length,
+          activeClasses: classes.filter(item => cleanText(item.Status).toLowerCase() === 'active').length,
+          totalReports: dailyStudents.length,
+          totalStudents,
+          filledMatrix,
+          savedMatrix,
+          issueCount: classHealth.issueCount,
+        };
+      }, [classes, dailyStudents, matrixRows, classHealth]);
+
       useEffect(() => {
         document.documentElement.classList.toggle('dark', isDark);
         localStorage.setItem(THEME_KEY, theme);
@@ -313,20 +466,13 @@
 
       function smoothToggleTheme() {
         document.body.classList.add('theme-switching');
-
         setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-
-        setTimeout(() => {
-          document.body.classList.remove('theme-switching');
-        }, 450);
+        setTimeout(() => document.body.classList.remove('theme-switching'), 420);
       }
 
       function showToast(type, text) {
         setToast({ type, text });
-
-        setTimeout(() => {
-          setToast(null);
-        }, 3400);
+        setTimeout(() => setToast(null), 3600);
       }
 
       function showSuccess(text) {
@@ -350,6 +496,10 @@
 
       function closeConfirm() {
         setConfirmDialog(null);
+      }
+
+      function redirectToLogin() {
+        window.location.href = 'index.html';
       }
 
       async function boot() {
@@ -379,11 +529,7 @@
           }
 
           setUser(sessionResponse.user);
-
-          setClassForm(prev => ({
-            ...prev,
-            branch: sessionResponse.user.branch,
-          }));
+          setClassForm(prev => ({ ...prev, branch: sessionResponse.user.branch }));
 
           await Promise.all([
             loadClasses(token),
@@ -391,7 +537,6 @@
             loadDailyMatrix(token, matrixDate),
             loadMonthlyRecap(token, recapMonth, recapYear),
           ]);
-
         } catch (err) {
           setAccessError(err.message || 'Gagal memuat dashboard.');
         } finally {
@@ -399,16 +544,13 @@
         }
       }
 
-      function redirectToLogin() {
-        window.location.href = 'index.html';
-      }
-
       async function loadClasses(tokenParam) {
         const token = tokenParam || localStorage.getItem(SESSION_KEY);
         const response = await runGas('getClassDetails', token);
 
         if (response.success) {
-          setClasses(response.data || []);
+          const data = (response.data || []).slice().sort(sortByClassOrder);
+          setClasses(data);
         } else {
           showError(response.message || 'Gagal memuat class.');
         }
@@ -430,7 +572,8 @@
         const response = await runGas('getDailyInputMatrix', token, dateParam || matrixDate);
 
         if (response.success) {
-          setMatrixRows(response.data || []);
+          const data = (response.data || []).slice().sort(sortByClassOrder);
+          setMatrixRows(data);
         } else {
           showError(response.message || 'Gagal memuat matrix input.');
         }
@@ -467,11 +610,12 @@
       function updateMatrixValue(index, value) {
         setMatrixRows(prev => {
           const copy = [...prev];
+          const original = copy[index]?.originalMuridHadir;
 
           copy[index] = {
             ...copy[index],
             muridHadir: value,
-            isEdited: String(value) !== String(copy[index].originalMuridHadir || ''),
+            isEdited: String(value) !== String(original || ''),
           };
 
           return copy;
@@ -479,11 +623,7 @@
       }
 
       function confirmSaveAllDaily() {
-        const rowsToSave = matrixRows.filter(row => {
-          return row.muridHadir !== '' &&
-            row.muridHadir !== null &&
-            row.muridHadir !== undefined;
-        });
+        const rowsToSave = matrixRows.filter(row => row.muridHadir !== '' && row.muridHadir !== null && row.muridHadir !== undefined);
 
         if (!rowsToSave.length) {
           showError('Belum ada data murid yang diisi.');
@@ -491,8 +631,8 @@
         }
 
         openConfirm({
-          title: 'Save all attendance?',
-          message: 'Data yang belum ada akan dibuat. Data yang sudah ada di tanggal yang sama akan direvisi tanpa duplicate.',
+          title: 'Save attendance?',
+          message: 'Data baru akan dibuat. Data lama pada kombinasi Branch + Date + Jam/Section + Level + Trainer akan diperbarui tanpa duplicate.',
           confirmText: 'Save All',
           tone: 'success',
           onConfirm: saveAllDaily,
@@ -501,17 +641,11 @@
 
       async function saveAllDaily() {
         closeConfirm();
-
-        const rowsToSave = matrixRows.filter(row => {
-          return row.muridHadir !== '' &&
-            row.muridHadir !== null &&
-            row.muridHadir !== undefined;
-        });
-
         setSaving(true);
 
         try {
           const token = localStorage.getItem(SESSION_KEY);
+          const rowsToSave = matrixRows.filter(row => row.muridHadir !== '' && row.muridHadir !== null && row.muridHadir !== undefined);
           const response = await runGas('saveDailyStudentsBulk', token, matrixDate, rowsToSave);
 
           if (!response.success) {
@@ -526,12 +660,22 @@
           ]);
 
           showSuccess(response.message || 'Data berhasil disimpan.');
-
         } catch (err) {
           showError(err.message || 'Terjadi error saat menyimpan bulk data.');
         } finally {
           setSaving(false);
         }
+      }
+
+      async function applyFilters() {
+        await loadDailyStudents(null, filters);
+      }
+
+      async function clearFilters() {
+        const empty = { date: '', month: '', year: '' };
+        setFilters(empty);
+        setRecordsSearch('');
+        await loadDailyStudents(null, empty);
       }
 
       function requestDeleteDaily(id) {
@@ -564,7 +708,6 @@
           ]);
 
           showSuccess(response.message || 'Data berhasil dihapus.');
-
         } catch (err) {
           showError(err.message || 'Terjadi error saat menghapus data.');
         } finally {
@@ -572,20 +715,12 @@
         }
       }
 
-      async function applyFilters() {
-        await loadDailyStudents(null, filters);
-      }
-
-      async function clearFilters() {
-        const empty = { date: '', month: '', year: '' };
-        setFilters(empty);
-        await loadDailyStudents(null, empty);
-      }
-
       async function handleSubmitClass(e) {
         e.preventDefault();
 
-        if (!classForm.trainerName || !classForm.level || !classForm.jamSection || !classForm.branch) {
+        const payload = normalizeClassPayload(classForm);
+
+        if (!payload.trainerName || !payload.level || !payload.jamSection || !payload.branch) {
           showError('Trainer Name, Level, Jam/Section, dan Branch wajib diisi.');
           return;
         }
@@ -594,15 +729,6 @@
 
         try {
           const token = localStorage.getItem(SESSION_KEY);
-
-          const payload = {
-            trainerName: classForm.trainerName,
-            level: classForm.level,
-            jamSection: classForm.jamSection,
-            branch: classForm.branch,
-            status: classForm.status,
-          };
-
           const response = classForm.id
             ? await runGas('updateClassDetail', token, classForm.id, payload)
             : await runGas('createClassDetail', token, payload);
@@ -621,7 +747,6 @@
           ]);
 
           showSuccess(response.message || 'Class berhasil disimpan.');
-
         } catch (err) {
           showError(err.message || 'Terjadi error saat menyimpan class.');
         } finally {
@@ -632,11 +757,11 @@
       function editClass(item) {
         setClassForm({
           id: item.ID,
-          trainerName: item['Trainer Name'],
-          level: item.Level,
-          jamSection: item['Jam/Section'],
-          branch: item.Branch,
-          status: item.Status || 'Active',
+          trainerName: displayTrainerName(item['Trainer Name']),
+          level: cleanText(item.Level),
+          jamSection: cleanText(item['Jam/Section']),
+          branch: cleanText(item.Branch),
+          status: cleanText(item.Status || 'Active'),
         });
 
         setActiveMenu('classes');
@@ -673,7 +798,6 @@
           ]);
 
           showSuccess(response.message || 'Class berhasil dihapus.');
-
         } catch (err) {
           showError(err.message || 'Terjadi error saat menghapus class.');
         } finally {
@@ -726,24 +850,6 @@
         }
       }
 
-      const stats = useMemo(() => {
-        const totalStudents = dailyStudents.reduce((sum, item) => {
-          return sum + Number(item['Murid Hadir'] || 0);
-        }, 0);
-
-        const filledMatrix = matrixRows.filter(row => row.muridHadir !== '' && row.muridHadir !== null && row.muridHadir !== undefined).length;
-        const savedMatrix = matrixRows.filter(row => row.isSaved).length;
-
-        return {
-          totalClasses: classes.length,
-          activeClasses: classes.filter(item => item.Status === 'Active').length,
-          totalReports: dailyStudents.length,
-          totalStudents,
-          filledMatrix,
-          savedMatrix,
-        };
-      }, [classes, dailyStudents, matrixRows]);
-
       const pageClass = isDark
         ? 'dark min-h-screen bg-[#020617] text-white'
         : 'min-h-screen bg-slate-100 text-slate-950';
@@ -751,14 +857,11 @@
       if (loading) {
         return (
           <div className={pageClass}>
-            <div className="min-h-screen flex items-center justify-center px-4">
+            <BackgroundGlow isDark={isDark} />
+            <div className="relative min-h-screen flex items-center justify-center px-4">
               <div className="text-center fade-in">
-                <div className={`w-12 h-12 border-4 rounded-full animate-spin mx-auto mb-4 ${
-                  isDark ? 'border-white/20 border-t-white' : 'border-slate-300 border-t-slate-950'
-                }`}></div>
-                <p className={isDark ? 'text-white/70 text-sm' : 'text-slate-500 text-sm'}>
-                  Loading Admin Dashboard...
-                </p>
+                <div className={`w-12 h-12 border-4 rounded-full animate-spin mx-auto mb-4 ${isDark ? 'border-white/20 border-t-white' : 'border-slate-300 border-t-slate-950'}`}></div>
+                <p className={mutedClass(isDark)}>Loading Admin Dashboard...</p>
               </div>
             </div>
           </div>
@@ -768,14 +871,13 @@
       if (accessError && !user) {
         return (
           <div className={pageClass}>
-            <div className="min-h-screen flex items-center justify-center px-4">
-              <div className={cardClass(isDark) + ' max-w-md w-full rounded-3xl p-6 text-center'}>
+            <BackgroundGlow isDark={isDark} />
+            <div className="relative min-h-screen flex items-center justify-center px-4">
+              <div className={cardClass(isDark) + ' max-w-md w-full rounded-[2rem] p-6 text-center'}>
+                <IconBubble isDark={isDark} icon="alert" />
                 <h1 className="text-xl font-black mb-2">Access Error</h1>
                 <p className="text-red-500 text-sm mb-5">{accessError}</p>
-                <button
-                  onClick={handleLogout}
-                  className={primaryButtonClass(isDark)}
-                >
+                <button onClick={handleLogout} className={primaryButtonClass(isDark)}>
                   Back to Login
                 </button>
               </div>
@@ -798,12 +900,21 @@
             />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-              <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 slide-up">
+              <section className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 slide-up">
                 <StatCard isDark={isDark} label="Active Class" value={stats.activeClasses} icon="layers" />
                 <StatCard isDark={isDark} label="Filled Today" value={stats.filledMatrix} icon="edit" />
                 <StatCard isDark={isDark} label="Saved Today" value={stats.savedMatrix} icon="check" />
                 <StatCard isDark={isDark} label="Murid Hadir" value={stats.totalStudents} icon="users" />
+                <StatCard isDark={isDark} label="Data Alerts" value={stats.issueCount} icon="alert" warning={stats.issueCount > 0} />
               </section>
+
+              {classHealth.issueCount > 0 && activeMenu !== 'classes' && (
+                <DataAlertBanner
+                  isDark={isDark}
+                  issueCount={classHealth.issueCount}
+                  onOpen={() => setActiveMenu('classes')}
+                />
+              )}
 
               {activeMenu === 'dashboard' && (
                 <DashboardView
@@ -822,11 +933,15 @@
                   isDark={isDark}
                   matrixDate={matrixDate}
                   matrixRows={matrixRows}
+                  matrixSearch={matrixSearch}
+                  setMatrixSearch={setMatrixSearch}
                   saving={saving}
                   attendanceSettings={attendanceSettings}
+                  classHealth={classHealth}
                   onChangeDate={handleChangeMatrixDate}
                   onChangeValue={updateMatrixValue}
                   onSaveAll={confirmSaveAllDaily}
+                  onOpenClasses={() => setActiveMenu('classes')}
                 />
               )}
 
@@ -836,6 +951,8 @@
                   dailyStudents={dailyStudents}
                   filters={filters}
                   setFilters={setFilters}
+                  recordsSearch={recordsSearch}
+                  setRecordsSearch={setRecordsSearch}
                   applyFilters={applyFilters}
                   clearFilters={clearFilters}
                   deleteDaily={requestDeleteDaily}
@@ -849,6 +966,8 @@
                   classForm={classForm}
                   setClassForm={setClassForm}
                   classes={classes}
+                  classHealth={classHealth}
+                  trainerSuggestions={trainerSuggestions}
                   saving={saving}
                   onSubmit={handleSubmitClass}
                   onReset={resetClassForm}
@@ -871,12 +990,7 @@
               )}
             </main>
 
-            <MacDock
-              isDark={isDark}
-              activeMenu={activeMenu}
-              setActiveMenu={setActiveMenu}
-            />
-
+            <MacDock isDark={isDark} activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
             <Toast toast={toast} isDark={isDark} />
             <ConfirmDialog dialog={confirmDialog} isDark={isDark} onClose={closeConfirm} />
           </div>
@@ -884,37 +998,32 @@
       );
     }
 
+    /***********************
+     * VIEWS
+     ***********************/
     function DashboardView({ isDark, recapMonth, recapYear, monthlyRecap, attendanceSettings, onChangeMonth, onChangeYear }) {
       const summary = monthlyRecap?.summary || {};
       const dailyTotals = monthlyRecap?.dailyTotals || [];
       const classes = monthlyRecap?.classes || [];
       const workingDays = getWorkingDaysInMonth(recapMonth, recapYear);
-      const workingDaySet = new Set(workingDays.map(item => Number(item.day)));
 
       const workingDailyTotals = workingDays.map(dayInfo => {
         const found = dailyTotals.find(item => Number(item.day) === Number(dayInfo.day));
-
-        return {
-          ...dayInfo,
-          total: Number(found?.total || 0),
-        };
+        return { ...dayInfo, total: Number(found?.total || 0) };
       });
 
       const maxTotal = Math.max(...workingDailyTotals.map(item => Number(item.total || 0)), 1);
 
       return (
         <section className="space-y-6 slide-up">
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6'}>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6'}>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <Icon name="chart" className="w-8 h-8" />
-                <div>
-                  <h2 className="text-xl font-black">Monthly Dashboard</h2>
-                  <p className={mutedClass(isDark)}>
-                    Recap murid hadir semua class per tanggal.
-                  </p>
-                </div>
-              </div>
+              <SectionTitle
+                icon="chart"
+                title="Monthly Dashboard"
+                subtitle="Recap murid hadir per class, hanya hari kerja Senin–Jumat."
+                isDark={isDark}
+              />
 
               <div className="grid grid-cols-2 gap-3 w-full lg:w-auto">
                 <Select
@@ -922,10 +1031,7 @@
                   label="Month"
                   value={recapMonth}
                   onChange={onChangeMonth}
-                  options={MONTH_NAMES.map((name, index) => ({
-                    value: index + 1,
-                    label: name,
-                  }))}
+                  options={MONTH_NAMES.map((name, index) => ({ value: index + 1, label: name }))}
                 />
 
                 <Input
@@ -946,11 +1052,11 @@
             <StatCard isDark={isDark} label="Filled Records" value={summary.filledRecords || 0} icon="database" />
           </div>
 
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6'}>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6'}>
             <div className="flex items-center justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Daily Total Chart</h2>
-                <p className={mutedClass(isDark)}>Total murid hadir per tanggal kerja (Senin–Jumat).</p>
+                <p className={mutedClass(isDark)}>Total murid hadir per tanggal kerja.</p>
               </div>
               <span className={badgeClass(isDark)}>{MONTH_NAMES[recapMonth - 1]} {recapYear}</span>
             </div>
@@ -963,11 +1069,8 @@
                   return (
                     <div key={item.day} className="flex-1 flex flex-col items-center gap-2">
                       <div className="text-[11px] font-black opacity-70">{item.total}</div>
-                      <div
-                        className={getAttendanceColorClass(Number(item.total || 0), attendanceSettings, 'bar')}
-                        style={{ height: `${height}px` }}
-                      ></div>
-                      <div className="text-[10px] opacity-60 text-center leading-tight">{item.label}<br />{item.weekdayLabel}</div>
+                      <div className={getAttendanceColorClass(Number(item.total || 0), attendanceSettings, 'bar')} style={{ height: `${height}px` }}></div>
+                      <div className="text-[10px] opacity-60 text-center leading-tight">{item.label}<br />{item.weekdayLabelId}</div>
                     </div>
                   );
                 })}
@@ -975,11 +1078,11 @@
             </div>
           </div>
 
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 overflow-hidden'}>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 overflow-hidden'}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Horizontal Recap</h2>
-                <p className={mutedClass(isDark)}>Baris = class, kolom = tanggal kerja Senin–Jumat.</p>
+                <p className={mutedClass(isDark)}>Baris = class, kolom = hari + tanggal kerja.</p>
               </div>
               <AttendanceLegend settings={attendanceSettings} />
             </div>
@@ -991,7 +1094,7 @@
                 <table className="w-full min-w-[1180px] text-xs">
                   <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
                     <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
-                      <th rowSpan="2" className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[220px] bg-inherit align-middle">Class</th>
+                      <th rowSpan="2" className="sticky left-0 z-20 py-3 pr-4 text-left min-w-[240px] bg-inherit align-middle">Class</th>
                       <th colSpan={workingDays.length} className="py-3 px-2 text-center text-[13px] font-black uppercase tracking-[0.18em]">
                         {MONTH_NAMES[recapMonth - 1]} {recapYear}
                       </th>
@@ -1000,7 +1103,7 @@
 
                     <tr className={isDark ? 'border-b border-white/10 text-white/50' : 'border-b border-slate-200 text-slate-500'}>
                       {workingDays.map(dayInfo => (
-                        <th key={dayInfo.day} className="py-3 px-2 text-center min-w-[56px]">
+                        <th key={dayInfo.day} className="py-3 px-2 text-center min-w-[58px]">
                           <span className="block font-black">{dayInfo.weekdayDateLabel}</span>
                         </th>
                       ))}
@@ -1011,7 +1114,6 @@
                     {classes.map(row => {
                       const workingRowDays = workingDays.map(dayInfo => {
                         const found = (row.days || []).find(day => Number(day.day) === Number(dayInfo.day));
-
                         return found || { day: dayInfo.day, value: '' };
                       });
 
@@ -1022,7 +1124,7 @@
                       return (
                         <tr key={row.classId} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
                           <td className={isDark ? 'sticky left-0 z-10 py-3 pr-4 bg-slate-900/95' : 'sticky left-0 z-10 py-3 pr-4 bg-white/95'}>
-                            <p className="font-black">{row.trainerName}</p>
+                            <p className="font-black">{displayTrainerName(row.trainerName)}</p>
                             <p className="opacity-55">{row.jamSection} • {row.level}</p>
                           </td>
 
@@ -1047,144 +1149,196 @@
       );
     }
 
-    function DailyInputView({ isDark, matrixDate, matrixRows, saving, attendanceSettings, onChangeDate, onChangeValue, onSaveAll }) {
+    function DailyInputView({ isDark, matrixDate, matrixRows, matrixSearch, setMatrixSearch, saving, attendanceSettings, classHealth, onChangeDate, onChangeValue, onSaveAll, onOpenClasses }) {
+      const visibleRows = matrixRows.filter(row => matchesSearch(row, matrixSearch));
+      const filledCount = matrixRows.filter(row => row.muridHadir !== '' && row.muridHadir !== null && row.muridHadir !== undefined).length;
+
       return (
-        <section className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-6 slide-up">
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 h-fit'}>
-            <div className="flex items-center gap-3 mb-5">
-              <Icon name="calendar" className="w-7 h-7" />
-              <div>
-                <h2 className="text-lg font-black">Daily Bulk Input</h2>
-                <p className={mutedClass(isDark)}>Input semua class dalam sekali save.</p>
+        <section className="grid grid-cols-1 xl:grid-cols-[370px_1fr] gap-6 slide-up">
+          <div className="space-y-6">
+            <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 h-fit'}>
+              <SectionTitle
+                icon="calendar"
+                title="Daily Bulk Input"
+                subtitle="Input semua class active dalam satu kali save."
+                isDark={isDark}
+              />
+
+              <div className="mt-5 space-y-4">
+                <Input
+                  isDark={isDark}
+                  label="Tanggal Input"
+                  type="date"
+                  value={matrixDate}
+                  onChange={onChangeDate}
+                />
+
+                <Input
+                  isDark={isDark}
+                  label="Cari Class / Trainer"
+                  value={matrixSearch}
+                  onChange={setMatrixSearch}
+                  placeholder="Contoh: Ana / Basic / Morning"
+                />
               </div>
+
+              <div className={softBoxClass(isDark) + ' mt-5 rounded-2xl p-4'}>
+                <p className="text-sm font-black mb-1">Clean Display, Safe Save</p>
+                <p className={mutedClass(isDark)}>
+                  Nama trainer ditampilkan dalam format rapi di frontend. Saat save, sistem tetap memakai data asli dari backend agar unique key Code.gs tetap aman.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mt-5">
+                <MiniInfo isDark={isDark} label="Visible" value={visibleRows.length} />
+                <MiniInfo isDark={isDark} label="Filled" value={filledCount} />
+              </div>
+
+              <button onClick={onSaveAll} disabled={saving} className={primaryButtonClass(isDark) + ' mt-5'}>
+                {saving ? 'Saving...' : 'Save All'}
+              </button>
             </div>
 
-            <Input
-              isDark={isDark}
-              label="Tanggal Input"
-              type="date"
-              value={matrixDate}
-              onChange={onChangeDate}
-            />
-
-            <div className={softBoxClass(isDark) + ' mt-5 rounded-2xl p-4'}>
-              <p className="text-sm font-bold mb-2">Anti Duplicate Logic</p>
-              <p className={mutedClass(isDark)}>
-                Data unik berdasarkan Branch + Date + Jam/Section + Level + Trainer.
-                Kalau sudah ada, sistem update. Kalau belum ada, sistem create.
-              </p>
-            </div>
-
-            <button
-              onClick={onSaveAll}
-              disabled={saving}
-              className={primaryButtonClass(isDark) + ' mt-5'}
-            >
-              {saving ? 'Saving...' : 'Save All'}
-            </button>
+            {classHealth.issueCount > 0 && (
+              <div className={warningCardClass(isDark) + ' rounded-[2rem] p-5'}>
+                <div className="flex gap-3">
+                  <Icon name="alert" className="w-6 h-6 shrink-0" />
+                  <div>
+                    <p className="font-black">Trainer/Class data needs cleaning</p>
+                    <p className="text-sm opacity-80 mt-1">
+                      Ada {classHealth.issueCount} potensi masalah di ClassDetails. Ini bisa bikin nama trainer terlihat tidak akurat.
+                    </p>
+                    <button onClick={onOpenClasses} className="mt-4 h-10 px-4 rounded-2xl bg-amber-500 text-white text-sm font-black">
+                      Open Classes Cleaner
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 overflow-hidden'}>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 overflow-hidden'}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <div>
                 <h2 className="text-lg font-black">Class Attendance Matrix</h2>
-                <p className={mutedClass(isDark)}>Isi jumlah murid hadir per class.</p>
+                <p className={mutedClass(isDark)}>Nama trainer sudah dirapikan untuk tampilan, tanpa mengubah payload save.</p>
               </div>
 
-              <span className={badgeClass(isDark)}>
-                {matrixRows.length} Classes
-              </span>
+              <span className={badgeClass(isDark)}>{matrixRows.length} Classes</span>
             </div>
 
-            {matrixRows.length === 0 ? (
-              <EmptyState isDark={isDark} text="Belum ada class active untuk branch ini." />
+            {visibleRows.length === 0 ? (
+              <EmptyState isDark={isDark} text="Tidak ada class yang cocok atau belum ada class active untuk branch ini." />
             ) : (
-              <div className="lg:hidden max-h-[62vh] overflow-y-auto custom-scroll pr-1 space-y-3">
-                {matrixRows.map((row, index) => (
-                  <div key={row.classId || index} className={softBoxClass(isDark) + ' rounded-2xl p-4'}>
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div>
-                        <p className="font-black">{row.trainerName}</p>
-                        <p className={mutedClass(isDark)}>
-                          {row.jamSection} • {row.level}
-                        </p>
-                      </div>
-                      <StatusPill row={row} />
-                    </div>
+              <>
+                <div className="lg:hidden max-h-[62vh] overflow-y-auto custom-scroll pr-1 space-y-3">
+                  {visibleRows.map(row => {
+                    const index = matrixRows.indexOf(row);
+                    const displayName = displayTrainerName(row.trainerName);
+                    const originalName = cleanText(row.trainerName);
+                    const hasNameFix = displayName && originalName && displayName !== originalName;
 
-                    <Input
-                      isDark={isDark}
-                      label="Murid Hadir"
-                      type="number"
-                      value={row.muridHadir}
-                      onChange={(value) => onChangeValue(index, value)}
-                      placeholder="0"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {matrixRows.length > 0 && (
-              <div className="hidden lg:block max-h-[62vh] overflow-auto custom-scroll">
-                <table className="w-full min-w-[760px] text-sm">
-                  <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
-                    <tr className={isDark ? 'text-white/45 border-b border-white/10' : 'text-slate-500 border-b border-slate-200'}>
-                      <th className="py-3 pr-4 text-left">Jam/Section</th>
-                      <th className="py-3 pr-4 text-left">Level</th>
-                      <th className="py-3 pr-4 text-left">Trainer</th>
-                      <th className="py-3 pr-4 text-left">Murid Hadir</th>
-                      <th className="py-3 pr-4 text-left">Preview</th>
-                      <th className="py-3 pr-4 text-left">Status</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {matrixRows.map((row, index) => (
-                      <tr key={row.classId || index} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
-                        <td className="py-3 pr-4 font-semibold">{row.jamSection}</td>
-                        <td className="py-3 pr-4">{row.level}</td>
-                        <td className="py-3 pr-4">{row.trainerName}</td>
-                        <td className="py-3 pr-4 w-44">
-                          <input
-                            type="number"
-                            value={row.muridHadir}
-                            placeholder="0"
-                            onChange={(e) => onChangeValue(index, e.target.value)}
-                            className={inputClass(isDark)}
-                          />
-                        </td>
-                        <td className="py-3 pr-4">
-                          <span className={getAttendanceColorClass(row.muridHadir, attendanceSettings, 'cell')}>
-                            {row.muridHadir === '' ? '-' : row.muridHadir}
-                          </span>
-                        </td>
-                        <td className="py-3 pr-4">
+                    return (
+                      <div key={row.classId || index} className={softBoxClass(isDark) + ' rounded-2xl p-4'}>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <p className="font-black">{displayName || '-'}</p>
+                            <p className={mutedClass(isDark)}>{row.jamSection} • {row.level}</p>
+                            {hasNameFix && <p className="text-[11px] text-amber-500 font-bold mt-1">Original: {originalName}</p>}
+                          </div>
                           <StatusPill row={row} />
-                        </td>
+                        </div>
+
+                        <Input
+                          isDark={isDark}
+                          label="Murid Hadir"
+                          type="number"
+                          value={row.muridHadir}
+                          onChange={(value) => onChangeValue(index, value)}
+                          placeholder="0"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="hidden lg:block max-h-[62vh] overflow-auto custom-scroll">
+                  <table className="w-full min-w-[860px] text-sm">
+                    <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
+                      <tr className={isDark ? 'text-white/45 border-b border-white/10' : 'text-slate-500 border-b border-slate-200'}>
+                        <th className="py-3 pr-4 text-left">Jam/Section</th>
+                        <th className="py-3 pr-4 text-left">Level</th>
+                        <th className="py-3 pr-4 text-left">Trainer</th>
+                        <th className="py-3 pr-4 text-left">Murid Hadir</th>
+                        <th className="py-3 pr-4 text-left">Preview</th>
+                        <th className="py-3 pr-4 text-left">Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+
+                    <tbody>
+                      {visibleRows.map(row => {
+                        const index = matrixRows.indexOf(row);
+                        const displayName = displayTrainerName(row.trainerName);
+                        const originalName = cleanText(row.trainerName);
+                        const hasNameFix = displayName && originalName && displayName !== originalName;
+
+                        return (
+                          <tr key={row.classId || index} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
+                            <td className="py-3 pr-4 font-semibold">{row.jamSection}</td>
+                            <td className="py-3 pr-4">{row.level}</td>
+                            <td className="py-3 pr-4">
+                              <p className="font-black">{displayName || '-'}</p>
+                              {hasNameFix && <p className="text-[11px] text-amber-500 font-bold">Original: {originalName}</p>}
+                            </td>
+                            <td className="py-3 pr-4 w-44">
+                              <input
+                                type="number"
+                                value={row.muridHadir}
+                                placeholder="0"
+                                onChange={(e) => onChangeValue(index, e.target.value)}
+                                className={inputClass(isDark)}
+                              />
+                            </td>
+                            <td className="py-3 pr-4">
+                              <span className={getAttendanceColorClass(row.muridHadir, attendanceSettings, 'cell')}>
+                                {row.muridHadir === '' ? '-' : row.muridHadir}
+                              </span>
+                            </td>
+                            <td className="py-3 pr-4"><StatusPill row={row} /></td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </section>
       );
     }
 
-    function RecordsView({ isDark, dailyStudents, filters, setFilters, applyFilters, clearFilters, deleteDaily, attendanceSettings }) {
-      return (
-        <section className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 slide-up overflow-hidden'}>
-          <div className="flex items-center gap-3 mb-5">
-            <Icon name="database" className="w-7 h-7" />
-            <div>
-              <h2 className="text-lg font-black">Daily Records</h2>
-              <p className={mutedClass(isDark)}>Data yang sudah tersimpan di DailyStudents.</p>
-            </div>
-          </div>
+    function RecordsView({ isDark, dailyStudents, filters, setFilters, recordsSearch, setRecordsSearch, applyFilters, clearFilters, deleteDaily, attendanceSettings }) {
+      const visibleRecords = dailyStudents.filter(item => {
+        return matchesSearch({
+          date: item.Date,
+          jamSection: item['Jam/Section'],
+          level: item.Level,
+          trainerName: item['Trainer Name'],
+          branch: item.Branch,
+        }, recordsSearch);
+      });
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-5">
+      return (
+        <section className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 slide-up overflow-hidden'}>
+          <SectionTitle
+            icon="database"
+            title="Daily Records"
+            subtitle="Data yang sudah tersimpan di DailyStudents."
+            isDark={isDark}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 my-5">
             <Input
               isDark={isDark}
               label="Filter Date"
@@ -1209,34 +1363,30 @@
               placeholder="2026"
             />
 
-            <div className="flex items-end gap-2">
-              <button onClick={applyFilters} className={primaryButtonClass(isDark)}>
-                Filter
-              </button>
+            <Input
+              isDark={isDark}
+              label="Search"
+              value={recordsSearch}
+              onChange={setRecordsSearch}
+              placeholder="Trainer / level"
+            />
 
-              <button onClick={clearFilters} className={secondaryButtonClass(isDark)}>
-                Clear
-              </button>
+            <div className="flex items-end gap-2">
+              <button onClick={applyFilters} className={primaryButtonClass(isDark)}>Filter</button>
+              <button onClick={clearFilters} className={secondaryButtonClass(isDark)}>Clear</button>
             </div>
           </div>
 
           <ResponsiveTable
             isDark={isDark}
             headers={['Date', 'Jam/Section', 'Level', 'Trainer', 'Murid', 'Action']}
-            rows={dailyStudents.map(item => [
+            rows={visibleRecords.map(item => [
               item.Date,
               item['Jam/Section'],
               item.Level,
-              item['Trainer Name'],
-              <span className={getAttendanceColorClass(item['Murid Hadir'], attendanceSettings, 'cell')}>
-                {item['Murid Hadir']}
-              </span>,
-              <button
-                onClick={() => deleteDaily(item.ID)}
-                className="h-9 px-3 rounded-xl bg-red-500/15 text-red-500 border border-red-500/20 text-xs font-black"
-              >
-                Delete
-              </button>
+              displayTrainerName(item['Trainer Name']),
+              <span className={getAttendanceColorClass(item['Murid Hadir'], attendanceSettings, 'cell')}>{item['Murid Hadir']}</span>,
+              <button onClick={() => deleteDaily(item.ID)} className="h-9 px-3 rounded-xl bg-red-500/15 text-red-500 border border-red-500/20 text-xs font-black">Delete</button>
             ])}
             emptyText="Belum ada data record."
             maxHeight="62vh"
@@ -1245,103 +1395,136 @@
       );
     }
 
-    function ClassesView({ isDark, classForm, setClassForm, classes, saving, onSubmit, onReset, onEdit, onDelete }) {
+    function ClassesView({ isDark, classForm, setClassForm, classes, classHealth, trainerSuggestions, saving, onSubmit, onReset, onEdit, onDelete }) {
+      const [classSearch, setClassSearch] = useState('');
+      const visibleClasses = classes.filter(item => matchesSearch({
+        branch: item.Branch,
+        jamSection: item['Jam/Section'],
+        level: item.Level,
+        trainerName: item['Trainer Name'],
+      }, classSearch));
+
       return (
-        <section className="grid grid-cols-1 xl:grid-cols-[390px_1fr] gap-6 slide-up">
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 h-fit'}>
-            <div className="flex items-center gap-3 mb-5">
-              <Icon name="layers" className="w-7 h-7" />
-              <div>
-                <h2 className="text-lg font-black">{classForm.id ? 'Edit Class' : 'Create Class'}</h2>
-                <p className={mutedClass(isDark)}>Master data class per branch.</p>
-              </div>
+        <section className="grid grid-cols-1 xl:grid-cols-[410px_1fr] gap-6 slide-up">
+          <div className="space-y-6">
+            <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 h-fit'}>
+              <SectionTitle
+                icon="layers"
+                title={classForm.id ? 'Edit Class' : 'Create Class'}
+                subtitle="Master data class per branch. Trainer name otomatis dirapikan sebelum save."
+                isDark={isDark}
+              />
+
+              <form onSubmit={onSubmit} className="space-y-4 mt-5">
+                <Input
+                  isDark={isDark}
+                  label="Trainer Name"
+                  value={classForm.trainerName}
+                  onChange={(value) => setClassForm(prev => ({ ...prev, trainerName: value }))}
+                  placeholder="Pilih / ketik trainer name"
+                  listId="trainer-name-suggestions"
+                />
+
+                <datalist id="trainer-name-suggestions">
+                  {trainerSuggestions.map(name => <option key={name} value={name} />)}
+                </datalist>
+
+                <Input
+                  isDark={isDark}
+                  label="Level"
+                  value={classForm.level}
+                  onChange={(value) => setClassForm(prev => ({ ...prev, level: value }))}
+                  placeholder="Basic 1 / Speaking 1"
+                />
+
+                <Input
+                  isDark={isDark}
+                  label="Jam/Section"
+                  value={classForm.jamSection}
+                  onChange={(value) => setClassForm(prev => ({ ...prev, jamSection: value }))}
+                  placeholder="Morning / Afternoon / Evening"
+                />
+
+                <Input
+                  isDark={isDark}
+                  label="Branch"
+                  value={classForm.branch}
+                  disabled
+                  onChange={() => {}}
+                />
+
+                <Select
+                  isDark={isDark}
+                  label="Status"
+                  value={classForm.status}
+                  onChange={(value) => setClassForm(prev => ({ ...prev, status: value }))}
+                  options={[
+                    { value: 'Active', label: 'Active' },
+                    { value: 'Inactive', label: 'Inactive' },
+                  ]}
+                />
+
+                <div className="flex gap-3">
+                  <button type="submit" disabled={saving} className={primaryButtonClass(isDark)}>
+                    {saving ? 'Saving...' : classForm.id ? 'Update' : 'Save'}
+                  </button>
+
+                  {classForm.id && (
+                    <button type="button" onClick={onReset} className={secondaryButtonClass(isDark)}>
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
 
-            <form onSubmit={onSubmit} className="space-y-4">
-              <Input
-                isDark={isDark}
-                label="Trainer Name"
-                value={classForm.trainerName}
-                onChange={(value) => setClassForm(prev => ({ ...prev, trainerName: value }))}
-                placeholder="Trainer name"
-              />
-
-              <Input
-                isDark={isDark}
-                label="Level"
-                value={classForm.level}
-                onChange={(value) => setClassForm(prev => ({ ...prev, level: value }))}
-                placeholder="Basic 1 / Speaking 1"
-              />
-
-              <Input
-                isDark={isDark}
-                label="Jam/Section"
-                value={classForm.jamSection}
-                onChange={(value) => setClassForm(prev => ({ ...prev, jamSection: value }))}
-                placeholder="Morning / Afternoon / Evening"
-              />
-
-              <Input
-                isDark={isDark}
-                label="Branch"
-                value={classForm.branch}
-                disabled
-                onChange={() => {}}
-              />
-
-              <Select
-                isDark={isDark}
-                label="Status"
-                value={classForm.status}
-                onChange={(value) => setClassForm(prev => ({ ...prev, status: value }))}
-                options={[
-                  { value: 'Active', label: 'Active' },
-                  { value: 'Inactive', label: 'Inactive' },
-                ]}
-              />
-
-              <div className="flex gap-3">
-                <button type="submit" disabled={saving} className={primaryButtonClass(isDark)}>
-                  {saving ? 'Saving...' : classForm.id ? 'Update' : 'Save'}
-                </button>
-
-                {classForm.id && (
-                  <button type="button" onClick={onReset} className={secondaryButtonClass(isDark)}>
-                    Cancel
-                  </button>
-                )}
-              </div>
-            </form>
+            <ClassDataHealthPanel
+              isDark={isDark}
+              classHealth={classHealth}
+              onEdit={onEdit}
+            />
           </div>
 
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 overflow-hidden'}>
-            <h2 className="text-lg font-black mb-5">Class Details</h2>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 overflow-hidden'}>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+              <div>
+                <h2 className="text-lg font-black">Class Details</h2>
+                <p className={mutedClass(isDark)}>Gunakan Edit untuk menyamakan nama trainer yang typo/variasi.</p>
+              </div>
+              <div className="w-full sm:w-72">
+                <Input
+                  isDark={isDark}
+                  label="Search"
+                  value={classSearch}
+                  onChange={setClassSearch}
+                  placeholder="Trainer / level / section"
+                />
+              </div>
+            </div>
 
             <ResponsiveTable
               isDark={isDark}
               headers={['Trainer', 'Level', 'Jam/Section', 'Branch', 'Status', 'Action']}
-              rows={classes.map(item => [
-                item['Trainer Name'],
-                item.Level,
-                item['Jam/Section'],
-                item.Branch,
-                item.Status,
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => onEdit(item)}
-                    className="h-9 px-3 rounded-xl bg-blue-500/15 text-blue-500 border border-blue-500/20 text-xs font-black"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => onDelete(item.ID)}
-                    className="h-9 px-3 rounded-xl bg-red-500/15 text-red-500 border border-red-500/20 text-xs font-black"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ])}
+              rows={visibleClasses.map(item => {
+                const displayName = displayTrainerName(item['Trainer Name']);
+                const originalName = cleanText(item['Trainer Name']);
+                const hasNameFix = displayName && originalName && displayName !== originalName;
+
+                return [
+                  <div>
+                    <p className="font-black">{displayName}</p>
+                    {hasNameFix && <p className="text-[11px] text-amber-500 font-bold">Original: {originalName}</p>}
+                  </div>,
+                  item.Level,
+                  item['Jam/Section'],
+                  item.Branch,
+                  <StatusBadge status={item.Status} />,
+                  <div className="flex gap-2">
+                    <button onClick={() => onEdit(item)} className="h-9 px-3 rounded-xl bg-blue-500/15 text-blue-500 border border-blue-500/20 text-xs font-black">Edit</button>
+                    <button onClick={() => onDelete(item.ID)} className="h-9 px-3 rounded-xl bg-red-500/15 text-red-500 border border-red-500/20 text-xs font-black">Delete</button>
+                  </div>
+                ];
+              })}
               emptyText="Belum ada class."
               maxHeight="62vh"
             />
@@ -1353,9 +1536,7 @@
     function SettingsView({ isDark, settings, onSave, onReset }) {
       const [form, setForm] = useState(settings);
 
-      useEffect(() => {
-        setForm(settings);
-      }, [settings]);
+      useEffect(() => setForm(settings), [settings]);
 
       function submit(e) {
         e.preventDefault();
@@ -1367,75 +1548,35 @@
           highMin: Number(form.highMin),
         };
 
-        if (
-          isNaN(clean.lowMax) ||
-          isNaN(clean.mediumMin) ||
-          isNaN(clean.mediumMax) ||
-          isNaN(clean.highMin)
-        ) {
-          return;
-        }
+        if (Object.values(clean).some(value => isNaN(value))) return;
 
         onSave(clean);
       }
 
       return (
         <section className="grid grid-cols-1 lg:grid-cols-[430px_1fr] gap-6 slide-up">
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6 h-fit'}>
-            <div className="flex items-center gap-3 mb-5">
-              <Icon name="settings" className="w-7 h-7" />
-              <div>
-                <h2 className="text-lg font-black">Attendance Color Settings</h2>
-                <p className={mutedClass(isDark)}>Atur batas warna jumlah murid.</p>
-              </div>
-            </div>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6 h-fit'}>
+            <SectionTitle
+              icon="settings"
+              title="Attendance Color Settings"
+              subtitle="Atur batas warna jumlah murid hadir."
+              isDark={isDark}
+            />
 
-            <form onSubmit={submit} className="space-y-4">
-              <Input
-                isDark={isDark}
-                label="Merah jika ≤"
-                type="number"
-                value={form.lowMax}
-                onChange={(value) => setForm(prev => ({ ...prev, lowMax: value }))}
-              />
-
-              <Input
-                isDark={isDark}
-                label="Kuning mulai dari"
-                type="number"
-                value={form.mediumMin}
-                onChange={(value) => setForm(prev => ({ ...prev, mediumMin: value }))}
-              />
-
-              <Input
-                isDark={isDark}
-                label="Kuning sampai"
-                type="number"
-                value={form.mediumMax}
-                onChange={(value) => setForm(prev => ({ ...prev, mediumMax: value }))}
-              />
-
-              <Input
-                isDark={isDark}
-                label="Hijau jika ≥"
-                type="number"
-                value={form.highMin}
-                onChange={(value) => setForm(prev => ({ ...prev, highMin: value }))}
-              />
+            <form onSubmit={submit} className="space-y-4 mt-5">
+              <Input isDark={isDark} label="Merah jika ≤" type="number" value={form.lowMax} onChange={(value) => setForm(prev => ({ ...prev, lowMax: value }))} />
+              <Input isDark={isDark} label="Kuning mulai dari" type="number" value={form.mediumMin} onChange={(value) => setForm(prev => ({ ...prev, mediumMin: value }))} />
+              <Input isDark={isDark} label="Kuning sampai" type="number" value={form.mediumMax} onChange={(value) => setForm(prev => ({ ...prev, mediumMax: value }))} />
+              <Input isDark={isDark} label="Hijau jika ≥" type="number" value={form.highMin} onChange={(value) => setForm(prev => ({ ...prev, highMin: value }))} />
 
               <div className="flex gap-3">
-                <button type="submit" className={primaryButtonClass(isDark)}>
-                  Save Settings
-                </button>
-
-                <button type="button" onClick={onReset} className={secondaryButtonClass(isDark)}>
-                  Reset
-                </button>
+                <button type="submit" className={primaryButtonClass(isDark)}>Save Settings</button>
+                <button type="button" onClick={onReset} className={secondaryButtonClass(isDark)}>Reset</button>
               </div>
             </form>
           </div>
 
-          <div className={cardClass(isDark) + ' rounded-3xl p-5 sm:p-6'}>
+          <div className={cardClass(isDark) + ' rounded-[2rem] p-5 sm:p-6'}>
             <h2 className="text-lg font-black mb-5">Preview</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -1445,10 +1586,9 @@
             </div>
 
             <div className={softBoxClass(isDark) + ' rounded-2xl p-4 mt-5'}>
-              <p className="text-sm font-bold mb-2">Default rules</p>
+              <p className="text-sm font-black mb-2">Default rules</p>
               <p className={mutedClass(isDark)}>
-                Di bawah/sama dengan 5 merah, 6–7 kuning, dan 8 ke atas hijau.
-                Settings ini disimpan di localStorage browser admin.
+                Di bawah/sama dengan 5 merah, 6–7 kuning, dan 8 ke atas hijau. Settings ini disimpan di localStorage browser admin.
               </p>
             </div>
           </div>
@@ -1458,7 +1598,7 @@
 
     function ProfileView({ isDark, user }) {
       return (
-        <section className={cardClass(isDark) + ' rounded-3xl p-6 slide-up max-w-2xl'}>
+        <section className={cardClass(isDark) + ' rounded-[2rem] p-6 slide-up max-w-2xl'}>
           <div className="flex items-center gap-4 mb-6">
             <div className={isDark ? 'w-16 h-16 rounded-3xl bg-white text-slate-950 flex items-center justify-center' : 'w-16 h-16 rounded-3xl bg-slate-950 text-white flex items-center justify-center'}>
               <Icon name="user" className="w-8 h-8" />
@@ -1480,6 +1620,118 @@
       );
     }
 
+    /***********************
+     * DATA HEALTH COMPONENTS
+     ***********************/
+    function DataAlertBanner({ isDark, issueCount, onOpen }) {
+      return (
+        <div className={warningCardClass(isDark) + ' rounded-[2rem] p-4 mb-6 slide-up'}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <Icon name="alert" className="w-6 h-6 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-black">ClassDetails perlu dirapikan</p>
+                <p className="text-sm opacity-80">Terdapat {issueCount} potensi typo/duplicate yang bisa memengaruhi nama trainer di menu Input.</p>
+              </div>
+            </div>
+            <button onClick={onOpen} className="h-10 px-4 rounded-2xl bg-amber-500 text-white text-sm font-black shrink-0">
+              Review Now
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function ClassDataHealthPanel({ isDark, classHealth, onEdit }) {
+      const { suspiciousTrainerGroups, duplicateClassGroups, formattingIssues, issueCount } = classHealth;
+
+      if (!issueCount) {
+        return (
+          <div className={successCardClass(isDark) + ' rounded-[2rem] p-5'}>
+            <div className="flex gap-3">
+              <Icon name="check" className="w-6 h-6 shrink-0" />
+              <div>
+                <p className="font-black">Trainer data looks clean</p>
+                <p className="text-sm opacity-80 mt-1">Belum terdeteksi variasi nama trainer atau duplicate class key.</p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className={warningCardClass(isDark) + ' rounded-[2rem] p-5'}>
+          <div className="flex gap-3 mb-4">
+            <Icon name="alert" className="w-6 h-6 shrink-0" />
+            <div>
+              <p className="font-black">Classes Cleaner</p>
+              <p className="text-sm opacity-80 mt-1">Perbaiki variasi nama trainer lewat tombol Edit. Ini hanya mengubah ClassDetails lewat API yang sudah ada.</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 max-h-[46vh] overflow-y-auto custom-scroll pr-1">
+            {suspiciousTrainerGroups.length > 0 && (
+              <HealthGroup
+                title="Possible same trainer, different writing"
+                items={suspiciousTrainerGroups.map(group => ({
+                  label: group.variants.join('  /  '),
+                  sublabel: `${group.items.length} classes use these variants`,
+                  target: group.items[0],
+                }))}
+                onEdit={onEdit}
+              />
+            )}
+
+            {duplicateClassGroups.length > 0 && (
+              <HealthGroup
+                title="Possible duplicate active class key"
+                items={duplicateClassGroups.map(group => ({
+                  label: `${group.items[0].Branch} • ${group.items[0]['Jam/Section']} • ${group.items[0].Level}`,
+                  sublabel: group.items.map(item => cleanText(item['Trainer Name'])).join(' / '),
+                  target: group.items[0],
+                }))}
+                onEdit={onEdit}
+              />
+            )}
+
+            {formattingIssues.length > 0 && (
+              <HealthGroup
+                title="Name formatting can be cleaned"
+                items={formattingIssues.slice(0, 8).map(issue => ({
+                  label: `${issue.originalTrainer} → ${issue.cleanTrainer}`,
+                  sublabel: `${issue.item['Jam/Section']} • ${issue.item.Level}`,
+                  target: issue.item,
+                }))}
+                onEdit={onEdit}
+              />
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function HealthGroup({ title, items, onEdit }) {
+      return (
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] opacity-75 mb-2">{title}</p>
+          <div className="space-y-2">
+            {items.map((item, index) => (
+              <div key={index} className="rounded-2xl bg-white/10 border border-white/10 p-3">
+                <p className="text-sm font-black">{item.label}</p>
+                <p className="text-xs opacity-75 mt-1">{item.sublabel}</p>
+                <button onClick={() => onEdit(item.target)} className="mt-3 h-8 px-3 rounded-xl bg-white/15 text-xs font-black">
+                  Edit related class
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /***********************
+     * SHARED COMPONENTS
+     ***********************/
     function Header({ user, isDark, theme, onToggleTheme, onLogout }) {
       return (
         <header className={isDark ? 'sticky top-0 z-30 bg-[#020617]/80 backdrop-blur-xl border-b border-white/10' : 'sticky top-0 z-30 bg-slate-100/80 backdrop-blur-xl border-b border-slate-200'}>
@@ -1492,25 +1744,15 @@
                   </div>
                   <h1 className="text-xl sm:text-2xl font-black">Admin Dashboard</h1>
                 </div>
-                <p className={mutedClass(isDark)}>
-                  {user?.username} • {user?.role} • {user?.branch}
-                </p>
+                <p className={mutedClass(isDark)}>{user?.username} • {user?.role} • {user?.branch}</p>
               </div>
 
               <div className="flex items-center gap-2">
-                <button
-                  onClick={onToggleTheme}
-                  className={iconButtonClass(isDark)}
-                  title="Toggle theme"
-                >
+                <button onClick={onToggleTheme} className={iconButtonClass(isDark)} title="Toggle theme">
                   <Icon name={theme === 'dark' ? 'sun' : 'moon'} className="w-5 h-5" />
                 </button>
 
-                <button
-                  onClick={onLogout}
-                  className={iconButtonClass(isDark)}
-                  title="Logout"
-                >
+                <button onClick={onLogout} className={iconButtonClass(isDark)} title="Logout">
                   <Icon name="logout" className="w-5 h-5" />
                 </button>
               </div>
@@ -1532,7 +1774,7 @@
 
       return (
         <nav className="fixed left-0 right-0 z-40 flex justify-center px-4 dock-pop" style={{ bottom: 'var(--dock-bottom)' }}>
-          <div className={(isDark ? 'dock-glass-dark border-white/15 shadow-black/40' : 'dock-glass-light border-white shadow-slate-300/60') + ' border shadow-2xl rounded-[2rem] px-3 py-3 flex items-end gap-2 max-w-full overflow-x-auto custom-scroll'}>
+          <div className={(isDark ? 'glass-dark border-white/15 shadow-black/40' : 'glass-light border-white shadow-slate-300/60') + ' border shadow-2xl rounded-[2rem] px-3 py-3 flex items-end gap-2 max-w-full overflow-x-auto custom-scroll'}>
             {menus.map(menu => {
               const active = activeMenu === menu.key;
 
@@ -1551,9 +1793,7 @@
                   }`}
                 >
                   <Icon name={menu.icon} className={active ? 'w-7 h-7' : 'w-6 h-6'} />
-                  <span className={`text-[10px] font-black mt-1 ${active ? 'opacity-100' : 'opacity-70'}`}>
-                    {menu.label}
-                  </span>
+                  <span className={`text-[10px] font-black mt-1 ${active ? 'opacity-100' : 'opacity-70'}`}>{menu.label}</span>
                 </button>
               );
             })}
@@ -1562,15 +1802,33 @@
       );
     }
 
-    function StatCard({ isDark, label, value, icon }) {
+    function SectionTitle({ icon, title, subtitle, isDark }) {
       return (
-        <div className={cardClass(isDark) + ' rounded-3xl p-4 sm:p-5'}>
+        <div className="flex items-center gap-3">
+          <Icon name={icon} className="w-7 h-7" />
+          <div>
+            <h2 className="text-lg sm:text-xl font-black">{title}</h2>
+            <p className={mutedClass(isDark)}>{subtitle}</p>
+          </div>
+        </div>
+      );
+    }
+
+    function StatCard({ isDark, label, value, icon, warning = false }) {
+      const iconWrap = warning
+        ? 'w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center'
+        : isDark
+          ? 'w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center'
+          : 'w-11 h-11 rounded-2xl bg-slate-950/5 flex items-center justify-center';
+
+      return (
+        <div className={cardClass(isDark) + ' rounded-[2rem] p-4 sm:p-5'}>
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className={mutedClass(isDark)}>{label}</p>
               <h3 className="text-2xl sm:text-3xl font-black mt-1">{value}</h3>
             </div>
-            <div className={isDark ? 'w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center' : 'w-11 h-11 rounded-2xl bg-slate-950/5 flex items-center justify-center'}>
+            <div className={iconWrap}>
               <Icon name={icon} className="w-5 h-5" />
             </div>
           </div>
@@ -1578,17 +1836,16 @@
       );
     }
 
-    function Input({ isDark, label, value, onChange, type = 'text', placeholder = '', disabled = false }) {
+    function Input({ isDark, label, value, onChange, type = 'text', placeholder = '', disabled = false, listId = '' }) {
       return (
         <div>
-          <label className={isDark ? 'block text-sm text-white/60 mb-2' : 'block text-sm text-slate-500 mb-2'}>
-            {label}
-          </label>
+          <label className={isDark ? 'block text-sm text-white/60 mb-2' : 'block text-sm text-slate-500 mb-2'}>{label}</label>
           <input
             type={type}
             value={value}
             disabled={disabled}
             placeholder={placeholder}
+            list={listId || undefined}
             onChange={(e) => onChange(e.target.value)}
             className={inputClass(isDark, disabled)}
           />
@@ -1599,18 +1856,10 @@
     function Select({ isDark, label, value, onChange, options }) {
       return (
         <div>
-          <label className={isDark ? 'block text-sm text-white/60 mb-2' : 'block text-sm text-slate-500 mb-2'}>
-            {label}
-          </label>
-          <select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className={inputClass(isDark)}
-          >
+          <label className={isDark ? 'block text-sm text-white/60 mb-2' : 'block text-sm text-slate-500 mb-2'}>{label}</label>
+          <select value={value} onChange={(e) => onChange(e.target.value)} className={inputClass(isDark)}>
             {options.map(option => (
-              <option key={option.value} value={option.value} className={isDark ? 'bg-slate-900' : 'bg-white'}>
-                {option.label}
-              </option>
+              <option key={option.value} value={option.value} className={isDark ? 'bg-slate-900' : 'bg-white'}>{option.label}</option>
             ))}
           </select>
         </div>
@@ -1618,9 +1867,7 @@
     }
 
     function ResponsiveTable({ isDark, headers, rows, emptyText, maxHeight = '60vh' }) {
-      if (!rows.length) {
-        return <EmptyState isDark={isDark} text={emptyText} />;
-      }
+      if (!rows.length) return <EmptyState isDark={isDark} text={emptyText} />;
 
       return (
         <div className="overflow-hidden rounded-2xl">
@@ -1628,22 +1875,14 @@
             <table className="w-full min-w-[780px] text-sm">
               <thead className={isDark ? 'sticky top-0 z-10 bg-slate-900/95 backdrop-blur-xl' : 'sticky top-0 z-10 bg-white/95 backdrop-blur-xl'}>
                 <tr className={isDark ? 'text-left text-white/45 border-b border-white/10' : 'text-left text-slate-500 border-b border-slate-200'}>
-                  {headers.map(header => (
-                    <th key={header} className="py-3 pr-4 font-bold first:pl-1">
-                      {header}
-                    </th>
-                  ))}
+                  {headers.map(header => <th key={header} className="py-3 pr-4 font-bold first:pl-1">{header}</th>)}
                 </tr>
               </thead>
 
               <tbody>
                 {rows.map((row, rowIndex) => (
                   <tr key={rowIndex} className={isDark ? 'border-b border-white/5' : 'border-b border-slate-100'}>
-                    {row.map((cell, cellIndex) => (
-                      <td key={cellIndex} className="py-3 pr-4 first:pl-1">
-                        {cell || '-'}
-                      </td>
-                    ))}
+                    {row.map((cell, cellIndex) => <td key={cellIndex} className="py-3 pr-4 first:pl-1">{cell || '-'}</td>)}
                   </tr>
                 ))}
               </tbody>
@@ -1677,7 +1916,7 @@
 
       return (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 py-6">
-          <div onClick={onClose} className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+          <div onClick={onClose} className="absolute inset-0 bg-black/55 backdrop-blur-sm"></div>
 
           <div className={cardClass(isDark) + ' relative w-full max-w-md rounded-[2rem] p-6 modal-pop'}>
             <div className={`w-14 h-14 rounded-3xl border flex items-center justify-center mb-5 ${iconClass}`}>
@@ -1688,16 +1927,8 @@
             <p className={mutedClass(isDark) + ' leading-relaxed mb-6'}>{dialog.message}</p>
 
             <div className="flex gap-3">
-              <button onClick={onClose} className={secondaryButtonClass(isDark) + ' flex-1'}>
-                {dialog.cancelText}
-              </button>
-
-              <button
-                onClick={dialog.onConfirm}
-                className={`h-11 px-5 rounded-2xl font-black transition active:scale-[0.98] flex-1 ${confirmClass}`}
-              >
-                {dialog.confirmText}
-              </button>
+              <button onClick={onClose} className={secondaryButtonClass(isDark) + ' flex-1'}>{dialog.cancelText}</button>
+              <button onClick={dialog.onConfirm} className={`h-11 px-5 rounded-2xl font-black active:scale-[0.98] flex-1 ${confirmClass}`}>{dialog.confirmText}</button>
             </div>
           </div>
         </div>
@@ -1708,7 +1939,6 @@
       if (!toast) return null;
 
       const isSuccess = toast.type === 'success';
-
       const boxClass = isSuccess
         ? isDark
           ? 'bg-emerald-500/15 text-emerald-100 border-emerald-400/20'
@@ -1721,9 +1951,7 @@
         <div className="fixed left-4 right-4 bottom-32 z-50 flex justify-center pointer-events-none">
           <div className={`toast-in pointer-events-auto max-w-md w-full rounded-3xl border px-4 py-4 shadow-2xl backdrop-blur-xl ${boxClass}`}>
             <div className="flex items-start gap-3">
-              <div className="mt-0.5">
-                <Icon name={isSuccess ? 'check' : 'alert'} className="w-5 h-5" />
-              </div>
+              <div className="mt-0.5"><Icon name={isSuccess ? 'check' : 'alert'} className="w-5 h-5" /></div>
               <p className="text-sm font-bold leading-relaxed">{toast.text}</p>
             </div>
           </div>
@@ -1743,9 +1971,14 @@
         cls = 'bg-emerald-500/15 text-emerald-500 border-emerald-500/20';
       }
 
+      return <span className={`inline-flex h-8 items-center px-3 rounded-full border text-xs font-black ${cls}`}>{text}</span>;
+    }
+
+    function StatusBadge({ status }) {
+      const active = cleanText(status).toLowerCase() === 'active';
       return (
-        <span className={`inline-flex h-8 items-center px-3 rounded-full border text-xs font-black ${cls}`}>
-          {text}
+        <span className={active ? 'inline-flex h-8 items-center px-3 rounded-full border text-xs font-black bg-emerald-500/15 text-emerald-500 border-emerald-500/20' : 'inline-flex h-8 items-center px-3 rounded-full border text-xs font-black bg-slate-500/15 text-slate-500 border-slate-500/20'}>
+          {status || '-'}
         </span>
       );
     }
@@ -1789,6 +2022,23 @@
       );
     }
 
+    function MiniInfo({ isDark, label, value }) {
+      return (
+        <div className={softBoxClass(isDark) + ' rounded-2xl p-4'}>
+          <p className={mutedClass(isDark)}>{label}</p>
+          <p className="text-2xl font-black mt-1">{value}</p>
+        </div>
+      );
+    }
+
+    function IconBubble({ isDark, icon }) {
+      return (
+        <div className={isDark ? 'mx-auto w-14 h-14 rounded-3xl bg-white/10 flex items-center justify-center mb-5' : 'mx-auto w-14 h-14 rounded-3xl bg-slate-950/5 flex items-center justify-center mb-5'}>
+          <Icon name={icon} className="w-7 h-7" />
+        </div>
+      );
+    }
+
     function BackgroundGlow({ isDark }) {
       return (
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -1797,6 +2047,73 @@
           <div className={`absolute -bottom-32 left-1/3 w-80 h-80 rounded-full blur-3xl ${isDark ? 'bg-purple-500/10' : 'bg-purple-300/30'}`}></div>
         </div>
       );
+    }
+
+    /***********************
+     * STYLE HELPERS
+     ***********************/
+    function cardClass(isDark) {
+      return isDark
+        ? 'bg-slate-900/82 border border-white/10 shadow-2xl shadow-black/25 backdrop-blur-xl'
+        : 'bg-white/86 border border-white shadow-xl shadow-slate-200/70 backdrop-blur-xl';
+    }
+
+    function softBoxClass(isDark) {
+      return isDark
+        ? 'bg-white/[0.055] border border-white/10'
+        : 'bg-slate-950/[0.035] border border-slate-200';
+    }
+
+    function warningCardClass(isDark) {
+      return isDark
+        ? 'bg-amber-500/12 border border-amber-400/20 text-amber-100 shadow-xl shadow-black/20'
+        : 'bg-amber-50 border border-amber-200 text-amber-800 shadow-lg shadow-amber-100/60';
+    }
+
+    function successCardClass(isDark) {
+      return isDark
+        ? 'bg-emerald-500/12 border border-emerald-400/20 text-emerald-100 shadow-xl shadow-black/20'
+        : 'bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-lg shadow-emerald-100/60';
+    }
+
+    function mutedClass(isDark) {
+      return isDark ? 'text-sm text-white/55' : 'text-sm text-slate-500';
+    }
+
+    function badgeClass(isDark) {
+      return isDark
+        ? 'inline-flex h-9 items-center px-3 rounded-full bg-white/10 border border-white/10 text-xs font-black text-white/80'
+        : 'inline-flex h-9 items-center px-3 rounded-full bg-slate-950/5 border border-slate-200 text-xs font-black text-slate-600';
+    }
+
+    function inputClass(isDark, disabled = false) {
+      const base = 'w-full h-11 px-4 rounded-2xl outline-none border text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed focus:ring-4';
+
+      return disabled
+        ? isDark
+          ? `${base} bg-white/5 border-white/10 text-white/55 focus:ring-white/0`
+          : `${base} bg-slate-100 border-slate-200 text-slate-500 focus:ring-slate-300/0`
+        : isDark
+          ? `${base} bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:border-blue-400/70 focus:ring-blue-400/10`
+          : `${base} bg-white border-slate-200 text-slate-950 placeholder:text-slate-400 focus:border-blue-500/70 focus:ring-blue-500/10`;
+    }
+
+    function primaryButtonClass(isDark) {
+      return isDark
+        ? 'w-full h-11 px-5 rounded-2xl bg-white text-slate-950 font-black hover:bg-slate-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed'
+        : 'w-full h-11 px-5 rounded-2xl bg-slate-950 text-white font-black hover:bg-slate-800 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed';
+    }
+
+    function secondaryButtonClass(isDark) {
+      return isDark
+        ? 'w-full h-11 px-5 rounded-2xl bg-white/10 text-white font-black border border-white/10 hover:bg-white/15 active:scale-[0.98]'
+        : 'w-full h-11 px-5 rounded-2xl bg-slate-950/5 text-slate-950 font-black border border-slate-200 hover:bg-slate-950/10 active:scale-[0.98]';
+    }
+
+    function iconButtonClass(isDark) {
+      return isDark
+        ? 'w-11 h-11 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/15 active:scale-[0.97]'
+        : 'w-11 h-11 rounded-2xl bg-slate-950/5 border border-slate-200 flex items-center justify-center hover:bg-slate-950/10 active:scale-[0.97]';
     }
 
     function getAttendanceColorClass(value, settings, type) {
@@ -1809,7 +2126,9 @@
       const number = Number(value);
 
       if (isNaN(number)) {
-        return 'inline-flex min-w-8 h-8 items-center justify-center rounded-xl px-2 bg-slate-500/10 text-slate-400 border border-slate-500/10 font-black';
+        return type === 'bar'
+          ? 'w-full rounded-t-xl bg-slate-400/20'
+          : 'inline-flex min-w-8 h-8 items-center justify-center rounded-xl px-2 bg-slate-500/10 text-slate-400 border border-slate-500/10 font-black';
       }
 
       if (number <= Number(settings.lowMax)) {
@@ -1835,6 +2154,9 @@
         : 'inline-flex min-w-8 h-8 items-center justify-center rounded-xl px-2 bg-slate-500/10 text-slate-400 border border-slate-500/10 font-black';
     }
 
+    /***********************
+     * ICONS
+     ***********************/
     function Icon({ name, className = 'w-5 h-5' }) {
       const icons = {
         chart: (
@@ -1845,9 +2167,7 @@
             <path d="M17 16v-3" />
           </>
         ),
-        edit: (
-          <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
-        ),
+        edit: <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />,
         database: (
           <>
             <ellipse cx="12" cy="5" rx="8" ry="3" />
@@ -1865,38 +2185,13 @@
         settings: (
           <>
             <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" />
-            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06A2 2 0 1 1 7.03 3.84l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.18.36.5.72 1 .9.33.12.7.1 1.1.1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z" />
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06A2 2 0 1 1 6.73 3.2l.06.06A1.7 1.7 0 0 0 8.6 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 8.6a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z" />
           </>
         ),
         user: (
           <>
-            <path d="M20 21a8 8 0 0 0-16 0" />
-            <circle cx="12" cy="7" r="4" />
-          </>
-        ),
-        calendar: (
-          <>
-            <path d="M8 2v4M16 2v4M3 10h18" />
-            <rect x="3" y="4" width="18" height="18" rx="3" />
-          </>
-        ),
-        check: (
-          <path d="m20 6-11 11-5-5" />
-        ),
-        alert: (
-          <>
-            <path d="M12 9v4" />
-            <path d="M12 17h.01" />
-            <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-          </>
-        ),
-        trash: (
-          <>
-            <path d="M3 6h18" />
-            <path d="M8 6V4h8v2" />
-            <path d="M19 6l-1 14H6L5 6" />
-            <path d="M10 11v6" />
-            <path d="M14 11v6" />
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21c1.6-4 4.2-6 8-6s6.4 2 8 6" />
           </>
         ),
         users: (
@@ -1907,14 +2202,31 @@
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </>
         ),
-        sun: (
+        calendar: (
           <>
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            <path d="M8 2v4M16 2v4M3 10h18" />
+            <rect x="3" y="4" width="18" height="18" rx="2" />
           </>
         ),
-        moon: (
-          <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />
+        check: (
+          <>
+            <path d="M20 6 9 17l-5-5" />
+          </>
+        ),
+        alert: (
+          <>
+            <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+            <path d="M12 9v4" />
+            <path d="M12 17h.01" />
+          </>
+        ),
+        trash: (
+          <>
+            <path d="M3 6h18" />
+            <path d="M8 6V4h8v2" />
+            <path d="M19 6l-1 14H6L5 6" />
+            <path d="M10 11v6M14 11v6" />
+          </>
         ),
         logout: (
           <>
@@ -1923,8 +2235,17 @@
             <path d="M21 12H9" />
           </>
         ),
+        sun: (
+          <>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </>
+        ),
+        moon: <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />,
         spark: (
-          <path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5L12 2Z" />
+          <>
+            <path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z" />
+          </>
         ),
         empty: (
           <>
@@ -1936,64 +2257,10 @@
       };
 
       return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           {icons[name] || icons.spark}
         </svg>
       );
-    }
-
-    function cardClass(isDark) {
-      return isDark
-        ? 'glass-dark border border-white/10 shadow-2xl shadow-black/20'
-        : 'glass-light border border-white shadow-xl shadow-slate-300/40';
-    }
-
-    function softBoxClass(isDark) {
-      return isDark
-        ? 'bg-white/5 border border-white/10'
-        : 'bg-slate-950/5 border border-slate-200';
-    }
-
-    function mutedClass(isDark) {
-      return isDark
-        ? 'text-sm text-white/50'
-        : 'text-sm text-slate-500';
-    }
-
-    function badgeClass(isDark) {
-      return isDark
-        ? 'inline-flex h-9 items-center px-4 rounded-full bg-white/10 border border-white/10 text-white/80 text-sm font-black'
-        : 'inline-flex h-9 items-center px-4 rounded-full bg-slate-950/5 border border-slate-200 text-slate-700 text-sm font-black';
-    }
-
-    function inputClass(isDark, disabled = false) {
-      if (disabled) {
-        return isDark
-          ? 'w-full h-11 rounded-2xl bg-white/5 border border-white/10 text-white/40 px-4 outline-none cursor-not-allowed'
-          : 'w-full h-11 rounded-2xl bg-slate-100 border border-slate-200 text-slate-400 px-4 outline-none cursor-not-allowed';
-      }
-
-      return isDark
-        ? 'w-full h-11 rounded-2xl bg-white/10 border border-white/10 text-white placeholder-white/30 px-4 outline-none focus:ring-2 focus:ring-white/30 transition'
-        : 'w-full h-11 rounded-2xl bg-white border border-slate-200 text-slate-950 placeholder-slate-400 px-4 outline-none focus:ring-2 focus:ring-slate-300 transition';
-    }
-
-    function primaryButtonClass(isDark) {
-      return isDark
-        ? 'w-full h-11 rounded-2xl bg-white text-slate-950 font-black hover:bg-slate-200 active:scale-[0.98] transition disabled:opacity-60'
-        : 'w-full h-11 rounded-2xl bg-slate-950 text-white font-black hover:bg-slate-800 active:scale-[0.98] transition disabled:opacity-60';
-    }
-
-    function secondaryButtonClass(isDark) {
-      return isDark
-        ? 'h-11 px-4 rounded-2xl bg-white/10 border border-white/10 text-white font-black hover:bg-white/15 transition'
-        : 'h-11 px-4 rounded-2xl bg-white border border-slate-200 text-slate-700 font-black hover:bg-slate-50 transition';
-    }
-
-    function iconButtonClass(isDark) {
-      return isDark
-        ? 'w-11 h-11 rounded-2xl bg-white/10 border border-white/10 text-white hover:bg-white/15 flex items-center justify-center transition'
-        : 'w-11 h-11 rounded-2xl bg-white border border-slate-200 text-slate-950 hover:bg-slate-50 flex items-center justify-center transition';
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
